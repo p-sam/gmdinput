@@ -1,0 +1,57 @@
+name: Build
+
+on: [push, pull_request, workflow_dispatch]
+
+jobs:
+  build-lib:
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        build: [debug, release]
+        include:
+          - {build: debug, cmaketype: Debug}
+          - {build: release, cmaketype: RelWithDebInfo}
+    steps:
+      - uses: lukka/get-cmake@latest 
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Build dll
+        run: |
+          cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=${{ matrix.cmaketype }}
+          cmake --build build
+      - name: Upload Assets
+        uses: actions/upload-artifact@v4
+        with:
+          name: lib-${{ matrix.build }}
+          path: |
+            build/*.dll
+            build/*.exe
+
+  build-ext:
+    needs: [build-lib]
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        build: [debug, release]
+        ext: [normal, unprefixed]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Download Assets
+        uses: actions/download-artifact@v4
+        with:
+          name: lib-${{ matrix.build }}
+          path: ./tool/gms/extensions/gmdinput
+      - uses: oven-sh/setup-bun@v2
+      - name: Build ext
+        run: |
+          bun tool/build-ext.js ${{ matrix.ext }}
+          Get-ChildItem -Path build/ext | Compress-Archive -DestinationPath build/gmdinput.yymps -Force
+      - uses: actions/upload-artifact@v4
+        with:
+          name: yymps-${{ matrix.build }}-${{ matrix.ext }}
+          path: build/*.yymps

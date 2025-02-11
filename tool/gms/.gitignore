@@ -1,0 +1,6 @@
+datafiles
+options/*
+*.dll
+!options/main
+!options/windows
+!options/extensions
