@@ -50,7 +50,7 @@ jobs:
       - name: Build ext
         run: |
           bun tool/build-ext.js ${{ matrix.ext }}
-          Get-ChildItem -Path build/ext | Compress-Archive -DestinationPath build/gmdinput.yymps -Force
+          Get-ChildItem -Path build/ext | Compress-Archive -DestinationPath build/gmdinput-${{ matrix.build }}-${{ matrix.ext }}.yymps -Force
       - uses: actions/upload-artifact@v4
         with:
           name: yymps-${{ matrix.build }}-${{ matrix.ext }}
