@@ -572,6 +572,17 @@ double gmdinput_poll(double refresh) {
     return 1.0;
 }
 
+double gmdinput_set_axis_invert(double axis, double invert) {
+    int i = (int)axis;
+
+    if (i < GM_AXES_START || i > GM_AXES_END) {
+        return 0.0;
+    }
+    
+    g_gm_axes[i - GM_AXES_START].invert = (BOOL)invert;
+    return 1.0;
+}
+
 double gmdinput_gamepad_is_supported(void) {
     return 42.0;
 }

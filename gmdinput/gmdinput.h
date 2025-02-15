@@ -35,6 +35,7 @@
 GMDINPUT_EXPORT double gmdinput_init(void* hwnd, void* video_d3d11_swapchain);
 GMDINPUT_EXPORT double gmdinput_shutdown(void);
 GMDINPUT_EXPORT double gmdinput_poll(double refresh);
+GMDINPUT_EXPORT double gmdinput_set_axis_invert(double axis, double invert);
 
 GMDINPUT_EXPORT double gmdinput_gamepad_is_supported(void);
 GMDINPUT_EXPORT double gmdinput_gamepad_is_connected(double device);

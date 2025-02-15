@@ -56,6 +56,9 @@ const char* gmdinput_gamepad_get_mapping(double device);
 double gmdinput_gamepad_test_mapping(double device, const char* mapping);
 double gmdinput_gamepad_remove_mapping(double device);
 
+// customize axis behavior
+double gmdinput_set_axis_invert(double axis, double invert);
+
 // advanced (these functions are automatically called for you on init/shutdown of the game)
 double gmdinput_init(void* hwnd, void* video_d3d11_swapchain);
 double gmdinput_shutdown();
