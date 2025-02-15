@@ -1,21 +1,23 @@
-﻿cmake_minimum_required(VERSION 3.13)
+﻿cmake_minimum_required(VERSION 3.15)
 
 # ensure dependencies are rebuilt whenever URL changes
 if(POLICY CMP0135)
     cmake_policy(SET CMP0135 NEW)
 endif()
 
+cmake_policy(SET CMP0091 NEW)
+
 project("gmdinput" C)
 set(CMAKE_C_STANDARD 11)
 set(CMAKE_C_VISIBILITY_PRESET hidden)
 set(CMAKE_VISIBILITY_INLINES_HIDDEN ON)
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
 include(GenerateExportHeader)
 include(FetchContent)
 set(FETCHCONTENT_QUIET FALSE)
 
-option(BUILD_TEST "Build test program")
 set(MAX_GAMEPADS 16 CACHE STRING "Max gamepad count")
 
 if(NOT WIN32)
